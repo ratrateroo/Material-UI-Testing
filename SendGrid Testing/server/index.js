@@ -24,14 +24,6 @@ app.post('/sendemail', (req, res) => {
 	console.log(req.body.message);
 	res.status(200).send({ message: 'Send email endpoint reached.' });
 
-	const message = {
-		to: 'ratrateroox@gmail.com',
-		from: 'ratrateroox@gmail.com',
-		subject: 'Sendgrid Email',
-		text: 'Test message.',
-		html: req.body.htmlContent,
-	};
-
 	// pdfshift('your_api_key', { source: 'https://www.example.com' }).then(
 	// 	(response) => {
 	// 		fs.writeFileSync(
@@ -58,21 +50,40 @@ app.post('/sendemail', (req, res) => {
 			console.log(pdfBuffer);
 		});
 	});
-	// const sendEmail = async () => {
-	// 	await sendGridMail
-	// 		.send(message)
-	// 		.then((response) => {
-	// 			console.log(response[0].statusCode);
-	// 			console.log(response[0].headers);
-	// 		})
-	// 		.then(() => {
-	// 			console.log('Message Sent!');
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log(error);
-	// 		});
-	// };
-	// sendEmail();
+
+	pathToAttachment = `${__dirname}/test.pdf`;
+	attachment = fs.readFileSync(pathToAttachment).toString('base64');
+
+	const message = {
+		to: 'ratrateroox@gmail.com',
+		from: 'ratrateroox@gmail.com',
+		subject: 'Sendgrid Email',
+		text: 'Test message.',
+		html: req.body.htmlContent,
+		attachments: [
+			{
+				content: attachment,
+				filename: 'attachment.pdf',
+				type: 'application/pdf',
+				disposition: 'attachment',
+			},
+		],
+	};
+	const sendEmail = async () => {
+		await sendGridMail
+			.send(message)
+			.then((response) => {
+				console.log(response[0].statusCode);
+				console.log(response[0].headers);
+			})
+			.then(() => {
+				console.log('Message Sent!');
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+	sendEmail();
 });
 
 app.listen(4000, () => console.log('Running on Port 4000'));
