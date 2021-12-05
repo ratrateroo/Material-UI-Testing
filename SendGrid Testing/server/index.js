@@ -4,6 +4,8 @@ const express = require('express');
 const cors = require('cors');
 const sendGridMail = require('@sendgrid/mail');
 sendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
+const PdfShift = require('pdfshift');
+const fs = require('fs');
 
 const app = express();
 app.use(cors());
@@ -29,21 +31,48 @@ app.post('/sendemail', (req, res) => {
 		text: 'Test message.',
 		html: req.body.htmlContent,
 	};
-	const sendEmail = async () => {
-		await sendGridMail
-			.send(message)
-			.then((response) => {
-				console.log(response[0].statusCode);
-				console.log(response[0].headers);
-			})
-			.then(() => {
-				console.log('Message Sent!');
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+
+	// pdfshift('your_api_key', { source: 'https://www.example.com' }).then(
+	// 	(response) => {
+	// 		fs.writeFileSync(
+	// 			'example.com.pdf',
+	// 			response.data,
+	// 			'binary',
+	// 			function () {}
+	// 		);
+	// 	}
+	// );
+
+	const pdfShift = new PdfShift(process.env.PDFSHIFT_API_KEY);
+	const pdfOptions = {
+		sandbox: true,
+		format: 'A4',
+		landscape: false,
 	};
-	sendEmail();
+	pdfShift.convert(req.body.htmlContent, pdfOptions).then((pdfBuffer) => {
+		// const pdf = {
+		// 	data: pdfBuffer,
+		// 	filename: 'report.pdf',
+		// };
+		fs.writeFile('test.pdf', pdfBuffer, 'binary', function () {
+			console.log(pdfBuffer);
+		});
+	});
+	// const sendEmail = async () => {
+	// 	await sendGridMail
+	// 		.send(message)
+	// 		.then((response) => {
+	// 			console.log(response[0].statusCode);
+	// 			console.log(response[0].headers);
+	// 		})
+	// 		.then(() => {
+	// 			console.log('Message Sent!');
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log(error);
+	// 		});
+	// };
+	// sendEmail();
 });
 
 app.listen(4000, () => console.log('Running on Port 4000'));
