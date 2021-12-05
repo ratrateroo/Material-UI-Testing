@@ -4,6 +4,15 @@ import './App.css';
 
 function App() {
 	const html = ReactDOMServer.renderToString(<HelloWorld />);
+	const htmlContent = `
+	<!DOCTYPE html>
+	<html>
+	  <head>
+	    
+	  </head>
+	  <body>${html}</body>
+	</html>
+	`;
 
 	const sendEmailHandler = () => {
 		console.log(html);
@@ -12,7 +21,10 @@ function App() {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ htmlContent: html, message: 'hello there.' }),
+			body: JSON.stringify({
+				htmlContent: htmlContent,
+				message: 'hello there.',
+			}),
 		})
 			.then((res) => {
 				if (res.status !== 200 && res.status !== 201) {
