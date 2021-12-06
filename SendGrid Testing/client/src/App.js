@@ -33,23 +33,7 @@ function App() {
 
 				return res.json();
 			})
-			// .then((resData) => {
-			// 	if (resData.data.login.token) {
-			// 		localStorage.setItem(
-			// 			'token',
-			// 			JSON.stringify(resData.data.login.token)
-			// 		);
-			// 		console.log(resData.data.login.token);
-			// 		auth.login(
-			// 			resData.data.login.token,
-			// 			resData.data.login.userId,
-			// 			resData.data.login.tokenExpiration,
-			// 			() => {
-			// 				navigate(from, { replace: true });
-			// 			}
-			// 		);
-			// 	}
-			// })
+			
 			.catch((err) => {
 				console.log(err);
 			});
