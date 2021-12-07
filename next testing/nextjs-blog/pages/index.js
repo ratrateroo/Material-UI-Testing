@@ -1,13 +1,12 @@
 import ReactDOMServer from 'react-dom/server';
-import HelloWorld from './components/HelloWorld';
-import BasicTable from './components/BasicTable';
+import HelloWorld from '../components/HelloWorld';
+import BasicTable from '../components/BasicTable';
 import {
 	Button,
 	createTheme,
 	ThemeProvider,
 	ServerStyleSheets,
 } from '@material-ui/core';
-import './App.css';
 
 const theme = createTheme({
 	palette: {
@@ -40,7 +39,7 @@ function App() {
 
 	const sendEmailHandler = () => {
 		console.log(html);
-		fetch('http://localhost:4000/sendemail', {
+		fetch('/api/sendmail/sendmail', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

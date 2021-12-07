@@ -51,8 +51,9 @@ app.post('/sendemail', (req, res) => {
 		});
 	});
 
-	pathToAttachment = `${__dirname}/test.pdf`;
-	attachment = fs.readFileSync(pathToAttachment).toString('base64');
+	const pathToAttachment = `${__dirname}/test.pdf`;
+	console.log(pathToAttachment);
+	const attachment = fs.readFileSync(pathToAttachment).toString('base64');
 
 	const message = {
 		to: 'ratrateroox@gmail.com',
@@ -83,7 +84,7 @@ app.post('/sendemail', (req, res) => {
 				console.log(error);
 			});
 	};
-	sendEmail();
+	//sendEmail();
 });
 
 app.listen(4000, () => console.log('Running on Port 4000'));

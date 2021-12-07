@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@sendgrid/mail": "^7.6.0",
+    "dotenv": "^10.0.0",
+    "next": "latest",
+    "pdfshift": "^2.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  }
+}
