@@ -35,7 +35,7 @@ function App() {
 	  <body>${html}</body>
 	</html>
 	`;
-	console.log(htmlContent);
+	// console.log(htmlContent);
 
 	const sendEmailHandler = () => {
 		console.log(html);
