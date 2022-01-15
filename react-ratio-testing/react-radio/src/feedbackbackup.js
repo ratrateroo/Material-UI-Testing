@@ -7,6 +7,7 @@ import {
 	Avatar,
 	TextField,
 } from '@material-ui/core';
+import PageHeader from '../components/main/pageHeader';
 import FeedbackIcon from '@material-ui/icons/Feedback';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -91,25 +92,34 @@ const StyledTableCell = withStyles((theme) => ({
 	},
 }))(TableCell);
 
-function createData(
-	question,
-	option1,
-	option2,
-	option3,
-	option4,
-	changeHandler,
-	getSelectedRating
-) {
-	return {
-		question,
-		option1,
-		option2,
-		option3,
-		option4,
-		changeHandler,
-		getSelectedRating,
-	};
+function createData(question, option1, option2, option3, option4) {
+	return { question, option1, option2, option3, option4 };
 }
+
+const rows = [
+	createData(
+		'Achieve Consistently',
+		'option1',
+		'option2',
+		'option3',
+		'option4'
+	),
+	createData(
+		'Collaborate Constructively',
+		'option5',
+		'option6',
+		'option7',
+		'option8'
+	),
+	createData('Leadership', 'option9', 'option10', 'option11', 'option12'),
+	createData(
+		'Being on Top of the Game',
+		'option13',
+		'option14',
+		'option15',
+		'option16'
+	),
+];
 
 function createMeasuringScaleData(rating, description) {
 	return { rating, description };
@@ -142,12 +152,6 @@ export default function Feedback() {
 
 	const [strengths, setStrengths] = useState('');
 	const [thingToImprove, setThingToImprove] = useState(0);
-
-	const [achieve, setAchieve] = useState({
-		achieveRate: 100,
-		achieveRemarks: '',
-	});
-
 	const [collaborate, setCollaborate] = useState({
 		collaborateRate: 0,
 		collaborateRemarks: '',
@@ -161,81 +165,6 @@ export default function Feedback() {
 		topGameRemarks: '',
 	});
 
-	const handleAchieveRating = (event) => {
-		setAchieve({ ...achieve, achieveRate: event.target.value });
-		console.log(event.target.value);
-		// console.log(achieve.achieveRate);
-	};
-	const handleCollaborateRating = (event) => {
-		setCollaborate({ ...collaborate, collaborateRate: event.target.value });
-		console.log(event.target.value);
-	};
-	const handleLeadershipRating = (event) => {
-		setLeadership({ ...leadership, leadershipRate: event.target.value });
-		console.log(event.target.value);
-	};
-	const handleTopGameRating = (event) => {
-		setTopGame({ ...topGame, topGameRate: event.target.value });
-		console.log(event.target.value);
-	};
-
-	const getAchieveRate = () => {
-		console.log('selectedRating called');
-		return achieve.achieveRate;
-	};
-	const getCollaborateRate = () => {
-		return collaborate.collaborateRate;
-	};
-	const getLeadershipRate = () => {
-		return leadership.leadershipRate;
-	};
-	const getTopGameRate = () => {
-		return topGame.topGameRate;
-	};
-	// const selectedAchieveRating = achieve.achieveRate;
-	// const selectedCollaborateRating = collaborate.collaborateRate;
-	// const selectedLeadershipRating = leadership.leadershipRate;
-	// const selectedTopGameRating = topGame.topGameRate;
-
-	const rows = [
-		createData(
-			'Achieve Consistently',
-			1,
-			2,
-			3,
-			4,
-			handleAchieveRating,
-			getAchieveRate
-		),
-		createData(
-			'Collaborate Constructively',
-			1,
-			2,
-			3,
-			4,
-			handleCollaborateRating,
-			getCollaborateRate
-		),
-		createData(
-			'Leadership',
-			1,
-			2,
-			3,
-			4,
-			handleLeadershipRating,
-			getLeadershipRate
-		),
-		createData(
-			'Being on Top of the Game',
-			1,
-			2,
-			3,
-			4,
-			handleTopGameRating,
-			getTopGameRate
-		),
-	];
-	// console.log(getAchieveRate());
 	const handleChange = (event) => {
 		setSelectedValue(event.target.value);
 		console.log(event.target.value);
@@ -256,6 +185,10 @@ export default function Feedback() {
 
 	return (
 		<>
+			<PageHeader
+				title="360 Evaluation Form"
+				icon={<FeedbackIcon fontSize="large" />}
+			/>
 			<div>
 				<Paper className={classes.root}>
 					<Grid container spacing={4} style={{ marginBottom: '1rem' }}>
@@ -284,7 +217,7 @@ export default function Feedback() {
 							<Card className={classes.card}>
 								<Avatar
 									alt="Remy Sharp"
-									src="https://styles.redditmedia.com/t5_2u5py/styles/communityIcon_e0naveun2di51.jpg?width=256&format=pjpg&s=d9a928639882240bff9a68a9666f962be4493721"
+									src="./images/cmd-avatar.png"
 									className={classes.avatar}
 								/>
 								<div className={classes.details}>
@@ -574,12 +507,8 @@ export default function Feedback() {
 										</TableCell>
 										<TableCell align="center">
 											<Radio
-												checked={
-													(() => {
-														return row.getSelectedRating();
-													}) === row.option1
-												}
-												onChange={row.changeHandler}
+												checked={selectedValue === row.option1}
+												onChange={handleChange}
 												value={row.option1}
 												name={row.question}
 												color="primary"
@@ -590,10 +519,8 @@ export default function Feedback() {
 										</TableCell>
 										<TableCell align="center">
 											<Radio
-												checked={
-													row.getSelectedRating === row.option2
-												}
-												onChange={row.changeHandler}
+												checked={selectedValue === row.option2}
+												onChange={handleChange}
 												value={row.option2}
 												name={row.question}
 												color="primary"
@@ -604,12 +531,8 @@ export default function Feedback() {
 										</TableCell>
 										<TableCell align="center">
 											<Radio
-												checked={
-													(() => {
-														return row.getSelectedRating;
-													}) === row.option3
-												}
-												onChange={row.changeHandler}
+												checked={selectedValue === row.option3}
+												onChange={handleChange}
 												value={row.option3}
 												name={row.question}
 												color="primary"
@@ -620,12 +543,8 @@ export default function Feedback() {
 										</TableCell>
 										<TableCell align="center">
 											<Radio
-												checked={
-													(() => {
-														return row.getSelectedRating;
-													}) === row.option4
-												}
-												onChange={row.changeHandler}
+												checked={selectedValue === row.option4}
+												onChange={handleChange}
 												value={row.option4}
 												name={row.question}
 												color="primary"

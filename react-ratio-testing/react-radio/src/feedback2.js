@@ -7,6 +7,7 @@ import {
 	Avatar,
 	TextField,
 } from '@material-ui/core';
+//import PageHeader from '../components/main/pageHeader';
 import FeedbackIcon from '@material-ui/icons/Feedback';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -91,25 +92,34 @@ const StyledTableCell = withStyles((theme) => ({
 	},
 }))(TableCell);
 
-function createData(
-	question,
-	option1,
-	option2,
-	option3,
-	option4,
-	changeHandler,
-	getSelectedRating
-) {
-	return {
-		question,
-		option1,
-		option2,
-		option3,
-		option4,
-		changeHandler,
-		getSelectedRating,
-	};
+function createData(question, option1, option2, option3, option4) {
+	return { question, option1, option2, option3, option4 };
 }
+
+const rows = [
+	createData(
+		'Achieve Consistently',
+		'option1',
+		'option2',
+		'option3',
+		'option4'
+	),
+	createData(
+		'Collaborate Constructively',
+		'option5',
+		'option6',
+		'option7',
+		'option8'
+	),
+	createData('Leadership', 'option9', 'option10', 'option11', 'option12'),
+	createData(
+		'Being on Top of the Game',
+		'option13',
+		'option14',
+		'option15',
+		'option16'
+	),
+];
 
 function createMeasuringScaleData(rating, description) {
 	return { rating, description };
@@ -138,113 +148,98 @@ export default function Feedback() {
 	const classes = useStyles();
 	const theme = useTheme();
 
-	const [selectedValue, setSelectedValue] = React.useState('');
+	const [selectedAchieveValue, setSelectedAchieveValue] = useState('1');
+	const [selectedCollaborateValue, setSelectedCollaborateValue] =
+		useState('1');
+	const [selectedLeadershipValue, setSelectedLeadershipValue] = useState('1');
+	const [selectedTopGameValue, setSelectedTopGameValue] = useState('1');
 
-	const [strengths, setStrengths] = useState('');
-	const [thingToImprove, setThingToImprove] = useState(0);
+	const [strengths, setStrengths] = useState({
+		strengthsPointers: '',
+	});
+	const [thingsToImprove, setThingsToImprove] = useState({
+		thingsToImprovePointers: '',
+	});
 
 	const [achieve, setAchieve] = useState({
-		achieveRate: 100,
+		achieveRate: '1',
 		achieveRemarks: '',
 	});
 
 	const [collaborate, setCollaborate] = useState({
-		collaborateRate: 0,
+		collaborateRate: '1',
 		collaborateRemarks: '',
 	});
 	const [leadership, setLeadership] = useState({
-		leadershipRate: 0,
+		leadershipRate: '1',
 		leadershipRemarks: '',
 	});
 	const [topGame, setTopGame] = useState({
-		topGameRate: 0,
+		topGameRate: '1',
 		topGameRemarks: '',
 	});
+	//textfield handlers
+	const handleStrengths = (event) => {
+		setStrengths({ ...strengths, strengthsPointers: event.target.value });
+	};
+	const handleThingsToImprove = (event) => {
+		setThingsToImprove({
+			...thingsToImprove,
+			thingsToImprovePointers: event.target.value,
+		});
+	};
 
+	//rating handlers
 	const handleAchieveRating = (event) => {
+		setSelectedAchieveValue(event.target.value);
 		setAchieve({ ...achieve, achieveRate: event.target.value });
 		console.log(event.target.value);
-		// console.log(achieve.achieveRate);
 	};
 	const handleCollaborateRating = (event) => {
-		setCollaborate({ ...collaborate, collaborateRate: event.target.value });
+		setSelectedCollaborateValue(event.target.value);
+		setCollaborate({
+			...collaborate,
+			collaborateRate: event.target.value,
+		});
+
 		console.log(event.target.value);
 	};
 	const handleLeadershipRating = (event) => {
+		setSelectedLeadershipValue(event.target.value);
 		setLeadership({ ...leadership, leadershipRate: event.target.value });
 		console.log(event.target.value);
 	};
 	const handleTopGameRating = (event) => {
+		setSelectedTopGameValue(event.target.value);
 		setTopGame({ ...topGame, topGameRate: event.target.value });
 		console.log(event.target.value);
 	};
-
-	const getAchieveRate = () => {
-		console.log('selectedRating called');
-		return achieve.achieveRate;
+	//remarks handlers
+	const handleAchieveRemarks = (event) => {
+		setAchieve({ ...achieve, achieveRemarks: event.target.value });
+		console.log(event.target.value);
 	};
-	const getCollaborateRate = () => {
-		return collaborate.collaborateRate;
+	const handleCollaborateRemarks = (event) => {
+		setCollaborate({
+			...collaborate,
+			collaborateRemarks: event.target.value,
+		});
+		console.log(event.target.value);
 	};
-	const getLeadershipRate = () => {
-		return leadership.leadershipRate;
+	const handleLeadershipRemarks = (event) => {
+		setLeadership({ ...leadership, leadershipRemarks: event.target.value });
+		console.log(event.target.value);
 	};
-	const getTopGameRate = () => {
-		return topGame.topGameRate;
-	};
-	// const selectedAchieveRating = achieve.achieveRate;
-	// const selectedCollaborateRating = collaborate.collaborateRate;
-	// const selectedLeadershipRating = leadership.leadershipRate;
-	// const selectedTopGameRating = topGame.topGameRate;
-
-	const rows = [
-		createData(
-			'Achieve Consistently',
-			1,
-			2,
-			3,
-			4,
-			handleAchieveRating,
-			getAchieveRate
-		),
-		createData(
-			'Collaborate Constructively',
-			1,
-			2,
-			3,
-			4,
-			handleCollaborateRating,
-			getCollaborateRate
-		),
-		createData(
-			'Leadership',
-			1,
-			2,
-			3,
-			4,
-			handleLeadershipRating,
-			getLeadershipRate
-		),
-		createData(
-			'Being on Top of the Game',
-			1,
-			2,
-			3,
-			4,
-			handleTopGameRating,
-			getTopGameRate
-		),
-	];
-	// console.log(getAchieveRate());
-	const handleChange = (event) => {
-		setSelectedValue(event.target.value);
+	const handleTopGameRemarks = (event) => {
+		setTopGame({ ...topGame, topGameRemarks: event.target.value });
 		console.log(event.target.value);
 	};
 
 	const handleSubmit = () => {
 		const form = {
 			strengths: strengths,
-			thingToImprove: thingToImprove,
+			thingsToImprove: thingsToImprove,
+			achieve: achieve,
 			collaborate: collaborate,
 			leadership: leadership,
 			topGame: topGame,
@@ -256,6 +251,10 @@ export default function Feedback() {
 
 	return (
 		<>
+			{/* <PageHeader
+				title="360 Evaluation Form"
+				icon={<FeedbackIcon fontSize="large" />}
+			/> */}
 			<div>
 				<Paper className={classes.root}>
 					<Grid container spacing={4} style={{ marginBottom: '1rem' }}>
@@ -284,7 +283,7 @@ export default function Feedback() {
 							<Card className={classes.card}>
 								<Avatar
 									alt="Remy Sharp"
-									src="https://styles.redditmedia.com/t5_2u5py/styles/communityIcon_e0naveun2di51.jpg?width=256&format=pjpg&s=d9a928639882240bff9a68a9666f962be4493721"
+									src="./images/cmd-avatar.png"
 									className={classes.avatar}
 								/>
 								<div className={classes.details}>
@@ -313,6 +312,7 @@ export default function Feedback() {
 						multiline
 						minRows={3}
 						maxRows={3}
+						onChange={handleStrengths}
 					/>
 					<TextField
 						id="outlined-basic"
@@ -323,6 +323,7 @@ export default function Feedback() {
 						multiline
 						minRows={3}
 						maxRows={3}
+						onChange={handleThingsToImprove}
 					/>
 					<Box
 						style={{
@@ -567,82 +568,251 @@ export default function Feedback() {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{rows.map((row) => (
-									<TableRow key={row.question}>
-										<TableCell component="th" scope="row">
-											{row.question}
-										</TableCell>
-										<TableCell align="center">
-											<Radio
-												checked={
-													(() => {
-														return row.getSelectedRating();
-													}) === row.option1
-												}
-												onChange={row.changeHandler}
-												value={row.option1}
-												name={row.question}
-												color="primary"
-												inputProps={{
-													'aria-label': row.option1,
-												}}
-											/>
-										</TableCell>
-										<TableCell align="center">
-											<Radio
-												checked={
-													row.getSelectedRating === row.option2
-												}
-												onChange={row.changeHandler}
-												value={row.option2}
-												name={row.question}
-												color="primary"
-												inputProps={{
-													'aria-label': row.option2,
-												}}
-											/>
-										</TableCell>
-										<TableCell align="center">
-											<Radio
-												checked={
-													(() => {
-														return row.getSelectedRating;
-													}) === row.option3
-												}
-												onChange={row.changeHandler}
-												value={row.option3}
-												name={row.question}
-												color="primary"
-												inputProps={{
-													'aria-label': row.option3,
-												}}
-											/>
-										</TableCell>
-										<TableCell align="center">
-											<Radio
-												checked={
-													(() => {
-														return row.getSelectedRating;
-													}) === row.option4
-												}
-												onChange={row.changeHandler}
-												value={row.option4}
-												name={row.question}
-												color="primary"
-												inputProps={{
-													'aria-label': row.option4,
-												}}
-											/>
-										</TableCell>
-										<TableCell align="right">
-											<TextField
-												id="outlined-basic"
-												variant="outlined"
-												fullWidth
-											/>
-										</TableCell>
-									</TableRow>
-								))}
+								<TableRow>
+									<TableCell component="th" scope="row">
+										Achieve Consistently
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedAchieveValue === '1'}
+											onChange={handleAchieveRating}
+											value="1"
+											name="achieve"
+											color="primary"
+											inputProps={{
+												'aria-label': 'achieve1',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedAchieveValue === '2'}
+											onChange={handleAchieveRating}
+											value="2"
+											name="achieve"
+											color="primary"
+											inputProps={{
+												'aria-label': 'achieve2',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedAchieveValue === '3'}
+											onChange={handleAchieveRating}
+											value="3"
+											name="achieve"
+											color="primary"
+											inputProps={{
+												'aria-label': 'achieve3',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedAchieveValue === '4'}
+											onChange={handleAchieveRating}
+											value="4"
+											name="achieve"
+											color="primary"
+											inputProps={{
+												'aria-label': 'achieve4',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="right">
+										<TextField
+											id="outlined-basic"
+											variant="outlined"
+											fullWidth
+											onChange={handleAchieveRemarks}
+										/>
+									</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell component="th" scope="row">
+										Collaborate Constructively
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedCollaborateValue === '1'}
+											onChange={handleCollaborateRating}
+											value="1"
+											name="colaborate"
+											color="primary"
+											inputProps={{
+												'aria-label': 'colaborate1',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedCollaborateValue === '2'}
+											onChange={handleCollaborateRating}
+											value="2"
+											name="colaborate"
+											color="primary"
+											inputProps={{
+												'aria-label': 'colaborate2',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedCollaborateValue === '3'}
+											onChange={handleCollaborateRating}
+											value="3"
+											name="colaborate"
+											color="primary"
+											inputProps={{
+												'aria-label': 'colaborate3',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedCollaborateValue === '4'}
+											onChange={handleCollaborateRating}
+											value="4"
+											name="colaborate"
+											color="primary"
+											inputProps={{
+												'aria-label': 'colaborate4',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="right">
+										<TextField
+											id="outlined-basic"
+											variant="outlined"
+											fullWidth
+											onChange={handleCollaborateRemarks}
+										/>
+									</TableCell>
+								</TableRow>
+
+								<TableRow>
+									<TableCell component="th" scope="row">
+										Achieve Consistently
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedLeadershipValue === '1'}
+											onChange={handleLeadershipRating}
+											value="1"
+											name="leadership"
+											color="primary"
+											inputProps={{
+												'aria-label': 'leadership1',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedLeadershipValue === '2'}
+											onChange={handleLeadershipRating}
+											value="2"
+											name="leadership"
+											color="primary"
+											inputProps={{
+												'aria-label': 'leadership2',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedLeadershipValue === '3'}
+											onChange={handleLeadershipRating}
+											value="3"
+											name="leadership"
+											color="primary"
+											inputProps={{
+												'aria-label': 'leadership3',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedLeadershipValue === '4'}
+											onChange={handleLeadershipRating}
+											value="4"
+											name="leadership"
+											color="primary"
+											inputProps={{
+												'aria-label': 'leadership4',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="right">
+										<TextField
+											id="outlined-basic"
+											variant="outlined"
+											fullWidth
+											onChange={handleLeadershipRemarks}
+										/>
+									</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell component="th" scope="row">
+										Collaborate Constructively
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedTopGameValue === '1'}
+											onChange={handleTopGameRating}
+											value="1"
+											name="topgame"
+											color="primary"
+											inputProps={{
+												'aria-label': 'topgame1',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedTopGameValue === '2'}
+											onChange={handleTopGameRating}
+											value="2"
+											name="topgame"
+											color="primary"
+											inputProps={{
+												'aria-label': 'topgame2',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedTopGameValue === '3'}
+											onChange={handleTopGameRating}
+											value="3"
+											name="topgame"
+											color="primary"
+											inputProps={{
+												'aria-label': 'topgame3',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="center">
+										<Radio
+											checked={selectedTopGameValue === '4'}
+											onChange={handleTopGameRating}
+											value="4"
+											name="topgame"
+											color="primary"
+											inputProps={{
+												'aria-label': 'topgame4',
+											}}
+										/>
+									</TableCell>
+									<TableCell align="right">
+										<TextField
+											id="outlined-basic"
+											variant="outlined"
+											fullWidth
+											onChange={handleTopGameRemarks}
+										/>
+									</TableCell>
+								</TableRow>
 							</TableBody>
 						</Table>
 					</TableContainer>
