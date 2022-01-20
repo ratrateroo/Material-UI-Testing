@@ -27,7 +27,7 @@ function App() {
 	const classes = useStyles();
 	const [state, setState] = React.useState({
 		top: false,
-		left: false,
+		left: true,
 		bottom: false,
 		right: false,
 	});
